@@ -1,25 +1,24 @@
+using ObserverPattern.Start;
 using ObserverPattern.GameOver;
 using System.Collections;
 using UnityEngine;
 
-public sealed class FoodSpawner : MonoBehaviour, IGameOverObserver
+public sealed class FoodSpawner : MonoBehaviour, IGameOverObserver, IStartObserver
 {
     [SerializeField] private Transform[] foods;
 
-    private const int interval = 1;
+    public void ExecuteStart(float rate) => StartCoroutine(SpawnWithDelay(rate));
 
-    private void Start() => StartCoroutine(SpawnWithDelay());
+    public void ExecuteGameOver() => StopAllCoroutines();
 
-    private IEnumerator SpawnWithDelay()
+    private IEnumerator SpawnWithDelay(float rate)
     {
-        yield return new WaitForSeconds(interval);
+        yield return new WaitForSeconds(rate);
         while (true)
         {
-            yield return new WaitForSeconds(interval);
-            int randIndex=Random.Range(0,foods.Length);
+            yield return new WaitForSeconds(rate);
+            int randIndex = Random.Range(0, foods.Length);
             Instantiate(foods[randIndex]);
         }
     }
-
-    public void ExecuteGameOver() => StopAllCoroutines();
 }
