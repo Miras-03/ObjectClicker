@@ -1,12 +1,13 @@
+using ObserverPattern.Score;
+
 public sealed class ScoreSingleton : IScoreObserver
 {
     private static ScoreSingleton instance;
+    private int score;
 
     public ScoreSingleton() => Score = 0;
 
-    public void ExecuteIncrease() => Score++;
-
-    public void ExecuteDecrease() => Score -= 5;
+    public void ExecutePoint(int point) => Score+=point;
 
     public static ScoreSingleton Instance
     {
@@ -18,5 +19,15 @@ public sealed class ScoreSingleton : IScoreObserver
         }
     }
 
-    public int Score { get; private set; }
+    public int Score 
+    { 
+        get => score;
+        private set
+        {
+            if (score > -1)
+                score = value;
+            else
+                score = 0;
+        }
+    }
 }

@@ -1,5 +1,7 @@
-public interface IScoreObserver
+namespace ObserverPattern.Score
 {
-    void ExecuteIncrease();
-    void ExecuteDecrease();
+    public interface IScoreObserver
+    {
+        void ExecutePoint(int point);
+    }
 }

@@ -1,14 +1,21 @@
 using UnityEngine;
 
-public sealed class ScoreHandler : MonoBehaviour
+namespace ObserverPattern.Score
 {
-    [SerializeField] private ScoreDisplay scoreDisplay;
-
-    private void OnEnable()
+    public sealed class ScoreHandler : MonoBehaviour
     {
-        AddObserver(scoreDisplay);
-        AddObserver(ScoreSingleton.Instance);
-    }
+        [SerializeField] private ScoreDisplay scoreDisplay;
 
-    private void AddObserver(IScoreObserver observer) => Score.Instance.Add(observer);
+        private void OnEnable()
+        {
+            AddObserver(ScoreSingleton.Instance);
+            AddObserver(scoreDisplay);
+        }
+
+        private void OnDestroy() => Clear();
+
+        private void AddObserver(IScoreObserver observer) => Score.Instance.Add(observer);
+
+        private void Clear() => Score.Instance.Clear();
+    }
 }

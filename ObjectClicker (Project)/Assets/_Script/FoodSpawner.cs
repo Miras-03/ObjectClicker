@@ -1,7 +1,8 @@
+using ObserverPattern.GameOver;
 using System.Collections;
 using UnityEngine;
 
-public sealed class FoodSpawner : MonoBehaviour
+public sealed class FoodSpawner : MonoBehaviour, IGameOverObserver
 {
     [SerializeField] private Transform[] foods;
 
@@ -19,4 +20,6 @@ public sealed class FoodSpawner : MonoBehaviour
             Instantiate(foods[randIndex]);
         }
     }
+
+    public void ExecuteGameOver() => StopAllCoroutines();
 }

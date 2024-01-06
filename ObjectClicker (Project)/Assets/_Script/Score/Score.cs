@@ -1,34 +1,31 @@
 using System.Collections.Generic;
 
-public sealed class Score 
+namespace ObserverPattern.Score
 {
-    private static Score instance;
-    
-    public static Score Instance
+    public sealed class Score
     {
-        get
+        private static Score instance;
+
+        public static Score Instance
         {
-            if (instance == null)
-                instance = new Score();
-            return instance;
+            get
+            {
+                if (instance == null)
+                    instance = new Score();
+                return instance;
+            }
         }
-    }
 
-    private List<IScoreObserver> observers = new List<IScoreObserver>();
+        private List<IScoreObserver> observers = new List<IScoreObserver>();
 
-    public void Add(IScoreObserver obs) => observers.Add(obs);
+        public void Add(IScoreObserver obs) => observers.Add(obs);
 
-    public void Clear() => observers.Clear();
+        public void Clear() => observers.Clear();
 
-    public void NotifyAboutIncrease()
-    {
-        foreach (IScoreObserver obs in observers)
-            obs.ExecuteIncrease();
-    }
-
-    public void NotifyAboutDecrease()
-    {
-        foreach (IScoreObserver obs in observers)
-            obs.ExecuteIncrease();
+        public void Notify(int point)
+        {
+            foreach (IScoreObserver obs in observers)
+                obs.ExecutePoint(point);
+        }
     }
 }

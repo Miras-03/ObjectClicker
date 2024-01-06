@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using ObserverPattern.Score;
 
 public class ScoreDisplay : MonoBehaviour, IScoreObserver
 {
@@ -9,9 +10,7 @@ public class ScoreDisplay : MonoBehaviour, IScoreObserver
 
     private void Start() => UpdateScore();
 
-    public void ExecuteIncrease() => UpdateScore();
-
-    public void ExecuteDecrease() => UpdateScore();
+    public void ExecutePoint(int point) => UpdateScore();
 
     private void UpdateScore()
     {

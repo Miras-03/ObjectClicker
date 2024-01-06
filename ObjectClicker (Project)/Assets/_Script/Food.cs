@@ -1,17 +1,25 @@
 using UnityEngine;
+using ObserverPattern.Score;
+using ObserverPattern.GameOver;
 
 public sealed class Food : MonoBehaviour
 {
     [SerializeField] private ParticleSystem explosionParticle;
+    private UIManager gameManager;
     private Rigidbody rb;
 
+    [SerializeField] private int point = 5;
     private const int startPos = -6;
     private const int xRange = 4;
     private const int minSpeed = 12;
     private const int maxSpeed = 16;
     private const int maxTorque = 10;
 
-    private void Awake() => rb = GetComponent<Rigidbody>();
+    private void Awake()
+    {
+        gameManager = FindObjectOfType<UIManager>();
+        rb = GetComponent<Rigidbody>();
+    }
 
     private void Start()
     {
@@ -22,11 +30,17 @@ public sealed class Food : MonoBehaviour
     private void OnMouseDown()
     {
         Instantiate(explosionParticle, transform.position, Quaternion.identity);
-        Score.Instance.NotifyAboutIncrease();
+        Score.Instance.Notify(point);
         Destroy(gameObject);
     }
 
     private void OnCollisionEnter() => Destroy(gameObject);
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Sensor"))
+            GameOver.Instance.Notify();
+    }
 
     private void SetStartPos() => transform.position = new Vector3(RandomWidth(), startPos);
 
