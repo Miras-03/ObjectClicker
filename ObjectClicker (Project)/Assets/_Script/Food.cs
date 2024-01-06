@@ -2,6 +2,7 @@ using UnityEngine;
 
 public sealed class Food : MonoBehaviour
 {
+    [SerializeField] private ParticleSystem explosionParticle;
     private Rigidbody rb;
 
     private const int startPos = -6;
@@ -9,7 +10,6 @@ public sealed class Food : MonoBehaviour
     private const int minSpeed = 12;
     private const int maxSpeed = 16;
     private const int maxTorque = 10;
-
 
     private void Awake() => rb = GetComponent<Rigidbody>();
 
@@ -19,7 +19,12 @@ public sealed class Food : MonoBehaviour
         TossUp();
     }
 
-    private void OnMouseDown() => Destroy(gameObject);
+    private void OnMouseDown()
+    {
+        Instantiate(explosionParticle, transform.position, Quaternion.identity);
+        Score.Instance.NotifyAboutIncrease();
+        Destroy(gameObject);
+    }
 
     private void OnCollisionEnter() => Destroy(gameObject);
 
