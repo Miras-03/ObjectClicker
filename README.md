@@ -8,3 +8,4 @@ Functionality:
 * If you click on an object, it is destroyed
 * The player’s score is tracked and displayed by the score text when hit a target
 * There are particle explosions when the player gets an object
+* Difficulty selection that affects spawn rate
