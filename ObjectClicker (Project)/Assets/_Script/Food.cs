@@ -21,7 +21,7 @@ public sealed class Food : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
         SetStartPos();
         TossUp();
@@ -31,10 +31,10 @@ public sealed class Food : MonoBehaviour
     {
         Instantiate(explosionParticle, transform.position, Quaternion.identity);
         Score.Instance.Notify(point);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
-    private void OnCollisionEnter() => Destroy(gameObject);
+    private void OnCollisionEnter() => gameObject.SetActive(false);
 
     private void OnTriggerEnter(Collider other)
     {

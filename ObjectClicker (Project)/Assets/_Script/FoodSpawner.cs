@@ -5,7 +5,11 @@ using UnityEngine;
 
 public sealed class FoodSpawner : MonoBehaviour, IGameOverObserver, IStartObserver
 {
-    [SerializeField] private Transform[] foods;
+    private ObjectPooler objectPooler;
+
+    private void Awake() => objectPooler = GetComponent<ObjectPooler>();
+
+    private void Start() => objectPooler.CreateObject(transform);
 
     public void ExecuteStart(float rate) => StartCoroutine(SpawnWithDelay(rate));
 
@@ -17,8 +21,22 @@ public sealed class FoodSpawner : MonoBehaviour, IGameOverObserver, IStartObserv
         while (true)
         {
             yield return new WaitForSeconds(rate);
-            int randIndex = Random.Range(0, foods.Length);
-            Instantiate(foods[randIndex]);
+            objectPooler.GetObject(RandomFood());
         }
+    }
+
+    private string RandomFood()
+    {
+        ObjectTypes[] types = { ObjectTypes.Skull, ObjectTypes.Cookie, ObjectTypes.Steak, ObjectTypes.EnergyCan };
+        string type = types[Random.Range(0, types.Length)].ToString();
+        return type;
+    }
+
+    internal enum ObjectTypes
+    {
+        Skull,
+        Cookie,
+        Steak,
+        EnergyCan
     }
 }
